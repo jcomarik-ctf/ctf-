@@ -22,6 +22,8 @@ typedef enum {
     TOKEN_PERCENT,      // %
     TOKEN_QUOTE,        // ""
     TOKEN_STRING,       // "string"
+    TOKEN_INIT,         // :=
+    TOKEN_SEC_START,    // _ - any section start
 
 } TOKEN_TYPE;
 
