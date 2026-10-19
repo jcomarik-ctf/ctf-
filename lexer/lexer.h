@@ -12,7 +12,7 @@ typedef struct {
 
 } Lexer;
 
-int lexlz(const char* source , size_t length);
+int lexlz(const char* source , size_t length , Lexer* result);
 
 int addToken(Lexer *lex, TOKEN token);
 

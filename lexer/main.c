@@ -7,115 +7,90 @@
 #include "lexer.h"
 
 
-void* allocm(char* olch , size_t* capacity , size_t* length)
-{
-    if(*length >= *capacity)
-    {
-        (*capacity) *= 2;
-
-        char *nwch = malloc(sizeof(char) * (*capacity));
-        if (nwch == NULL)
-        {
-            (*capacity) /= 2;
-            
-            return NULL;
-        }
-
-        for(size_t i = 0 ; i < (*length) ; ++i)
-        {
-            nwch[i] = olch[i];
-        }
-
-        free(olch);
-
-        return nwch;
-
-    } else {
-
-        return olch;
-    }
-
-}
-
-
 
 int main()
 {
     // массив исходного текста 
-    size_t capacity = 512 , length = 0;                 // вместимость динам. массива и длина 
-
-    char* filearr = malloc(sizeof(char) * capacity);    // выделение памяти
-    if(filearr == NULL){return 1;}
+    char* filearr;
 
     // начало чтения с файла:
-    FILE* file = fopen("test.txt" , "rb");
+    FILE* file = fopen("test.tj" , "rb");
     if(file == NULL)
     {
         printf("Error! File not found.\n");
-        free(filearr);   
         return 1;
     }
 
-    // ------------------------------------
-
-    while(1)
+    
+    if(fseek(file , 0 , SEEK_END) != 0)
     {
-        if(length >= capacity)
-        {
-            filearr = allocm(filearr , &capacity , &length);
-            if(filearr == NULL)
-            {
-                printf("Error : memory not allocated.\n");
-                fclose(file);
-                return 1;
-            }
-        }
+        printf("error with fseek()\n");
+        fclose(file);
+        
+        return 1;
+    }
+    
+    long l = ftell(file);
 
-        size_t available = capacity - length;
-        size_t bytes_read = fread((filearr + length), sizeof(char), available , file);
-
-        if(bytes_read > 0)
-        {
-            length += bytes_read;
-        }
-
-        if(bytes_read < available)
-        {
-            if(ferror(file))
-            {
-                printf("Error in file reader!\n");
-                free(filearr);   
-                fclose(file);
-                return 1;
-            }
-
-            if(feof(file))
-            {
-                break;
-            }
-        }
-
+    if(l == -1L)
+    {
+        printf("error with ftell()\n");
+        fclose(file);
+        
+        return 1;
     }
 
-    // ------------------------------------
-
-    size_t pos = 0;
-    
-    
-    if(lexlz(filearr , length) != 0){
-        printf("Error with output.\n");
+    if(fseek(file , 0 , SEEK_SET) == -1L)
+    {
+        printf("error with fseek()\n");
         fclose(file);
+        
+        return 1;
+    }
+    
+
+    size_t length = 0;           // вместимость динам. массива и длина 
+
+    filearr = malloc(l + 1);    // выделение памяти
+    if(filearr == NULL){ fclose(file) ; return 1;}
+
+    size_t readb = fread(filearr , 1 , l , file);
+    if(readb != l && ferror(file))
+    {
+        printf("error with file read\n");
+        free(filearr);
+        fclose(file);
+
+        return 1;
+    }
+
+    filearr[readb] = '\0';
+    length = readb;
+
+   
+    Lexer lexeme_array = {0};                           // создаем структуру с данными массива токенов
+    if(lexlz(filearr , length , &lexeme_array) != 0){
+        printf("Error with output.\n");
+        free(filearr);
+        fclose(file);
+
         return 1;
     }
 
     // debug only
-    printf("%zu|%zu", capacity , length);
+    for(size_t i = 0 ; i < lexeme_array.length ; i++)
+    {
+        printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
+             lexeme_array.token_arr[i].value,
+             lexeme_array.token_arr[i].type ,
+             lexeme_array.token_arr[i].cpos,
+             lexeme_array.token_arr[i].lng);
+            
+    }
 
-
-
+    printf("%d|%zu", l , length);
 
     fclose(file);
-
     free(filearr);   
     return 0;
 }

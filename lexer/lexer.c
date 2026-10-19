@@ -19,7 +19,7 @@ int addToken(Lexer *lex, TOKEN token)
             printf("Error with reallocated memory.\n");
             lex->capacity /= 2;
 
-            free(nw);
+            
             return 1;
         }
         lex->token_arr = nw;
@@ -45,27 +45,7 @@ Lexer lexer_init(size_t cap){
     
 }
 
-// debug only
-void printTokens(Lexer* lex)
-{
-    if(lex->token_arr == NULL)
-    {   
-        printf("Error with memory allocate.\n");
-        return;
-    }
-
-    for(size_t i = 0 ; i < lex->length ; i++)
-    {
-        printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
-             lex->token_arr[i].value,
-             lex->token_arr[i].type ,
-             lex->token_arr[i].cpos,
-             lex->token_arr[i].lng);
-            
-    }
-}
-
-int lexlz(const char* source , size_t length)
+int lexlz(const char* source , size_t length , Lexer *result)
 {
 
     if(source == NULL || length <= 0)
@@ -105,7 +85,11 @@ int lexlz(const char* source , size_t length)
             lexeme[lng] = '\0';
 
             TOKEN t = CreateToken(TOKEN_IDENTIFIER , spos , lng , lexeme);
-            addToken(&lexs , t);
+            if(addToken(&lexs , t) != 0)
+            {
+                printf("error with addToken()\n");
+                return 1;
+            }
 
             
 
@@ -131,7 +115,11 @@ int lexlz(const char* source , size_t length)
             lexeme[lng] = '\0';
 
             TOKEN t = CreateToken(TOKEN_INT_LITERAL , spos , lng , lexeme);
-            addToken(&lexs , t);
+            if(addToken(&lexs , t) != 0)
+            {
+                printf("error with addToken()\n");
+                return 1;
+            }
 
             
 
@@ -146,104 +134,164 @@ int lexlz(const char* source , size_t length)
         
             if(pos + 2 < length && source[pos] == '=' && source[pos+1] == '=' && source[pos+2] == '='){
                 TOKEN t = CreateToken(TOKEN_T_EQUALS , spos , 3 , "===");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 3;
                 continue;
             }
             else if(pos + 1 < length && source[pos] == '=' && source[pos+1] == '='){
                 TOKEN t = CreateToken(TOKEN_D_EQUALS , spos , 2 , "==");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 2;
                 
                 continue;
             }
             else if(source[pos] == '='){
                 TOKEN t = CreateToken(TOKEN_EQUALS , spos , 1 , "=");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(pos + 1 < length && source[pos] == ':' && source[pos+1] == '='){
                 TOKEN t = CreateToken(TOKEN_INIT , spos , 2 , ":=");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 2;
                 
                 continue;
             }
             else if(source[pos] == ';'){
                 TOKEN t = CreateToken(TOKEN_SEMICOLON , spos , 1 , ";");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == ':'){
                 TOKEN t = CreateToken(TOKEN_COLON , spos , 1 , ":");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
 
                 continue;
             }
             else if(source[pos] == ','){
                 TOKEN t = CreateToken(TOKEN_COMMA , spos , 1 , ",");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
 
                 continue;
             }
             else if(source[pos] == '.'){
                 TOKEN t = CreateToken(TOKEN_DOT , spos , 1 , ".");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
 
                 continue;
             }
             else if(source[pos] == '('){
                 TOKEN t = CreateToken(TOKEN_LPAREN , spos , 1 , "(");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == ')'){
                 TOKEN t = CreateToken(TOKEN_RPAREN , spos , 1 , ")");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == '{'){
                 TOKEN t = CreateToken(TOKEN_LBRACE , spos , 1 , "{");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == '}'){
                 TOKEN t = CreateToken(TOKEN_RBRACE , spos , 1 , "}");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == '%'){
                 TOKEN t = CreateToken(TOKEN_PERCENT , spos , 1 , "%");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
                 
                 continue;
             }
             else if(source[pos] == '+'){
                 TOKEN t = CreateToken(TOKEN_PLUS , spos , 1 , "+");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
 
                 continue;
             }
             else if(source[pos] == '-'){
                 TOKEN t = CreateToken(TOKEN_MINUS , spos , 1 , "-");
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
                 pos += 1;
 
                 continue;
@@ -276,7 +324,50 @@ int lexlz(const char* source , size_t length)
                 val[stlen] = '\0';
 
                 TOKEN t = CreateToken(TOKEN_STRING , spos , stlen , val);
-                addToken(&lexs , t);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                };
+                
+                free(val);
+
+                continue;
+                
+            }
+            else if(source[pos] == '@'){
+                size_t spos = pos;
+                pos++;
+
+                size_t start = pos;
+
+                while(pos < length && source[pos] != '@')
+                {
+                    pos++;
+                }
+
+                size_t seclen = pos - start;
+
+                if(pos >= length)
+                {
+                    printf("Error : unterminated section.\n");
+                    return 1;
+                }
+
+                pos++;
+
+                char *val = malloc(seclen + 1);
+                if(val == NULL) return 1;
+
+                memcpy(val , source + start , seclen);
+                val[seclen] = '\0';
+
+                TOKEN t = CreateToken(TOKEN_SECTION , spos , seclen , val);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                };
                 
                 free(val);
 
@@ -297,8 +388,8 @@ int lexlz(const char* source , size_t length)
         
     }
 
-    printTokens(&lexs);
     
+    *result = lexs;
     return 0;
 }
 
