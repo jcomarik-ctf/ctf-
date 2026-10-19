@@ -25,3 +25,4 @@ TOKEN CreateToken(TOKEN_TYPE type , size_t current_position , size_t length , co
     return now_tk;
     
 }
+

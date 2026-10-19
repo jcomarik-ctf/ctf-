@@ -41,12 +41,12 @@ void* allocm(char* olch , size_t* capacity , size_t* length)
 
 int main()
 {
-
+    // массив исходного текста 
     size_t capacity = 512 , length = 0;                 // вместимость динам. массива и длина 
 
     char* filearr = malloc(sizeof(char) * capacity);    // выделение памяти
     if(filearr == NULL){return 1;}
-    
+
     // начало чтения с файла:
     FILE* file = fopen("test.txt" , "rb");
     if(file == NULL)
@@ -108,6 +108,7 @@ int main()
         return 1;
     }
 
+    // debug only
     printf("%zu|%zu", capacity , length);
 
 
