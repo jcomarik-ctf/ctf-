@@ -5,6 +5,7 @@ typedef enum {
     NODE_BIN_OP,        // any binary operation
     NODE_INT,           // integer    (INT)
     NODE_IDENT,         // identidier (STR)
+    NODE_ASSIGN,
 
 
 } NODEType;
@@ -22,5 +23,5 @@ typedef struct {
 
 } ASTNode;
 
-int eval(ASTNode* n);
+int eval(ASTNode* n , SymbolTable *env);
 
