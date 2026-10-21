@@ -1,6 +1,6 @@
-#include <stdio.h>
+#pragma once
 
-#define MAX_SIZE 101
+#include <stdio.h>
 
 int hashFunc(const char* ident);
 
@@ -30,3 +30,5 @@ typedef struct {
 int get_var(SymbolTable* env , char* ident);
 
 int set_var(SymbolTable* env , char* ident , int value);
+
+void freeTable(SymbolTable* env);

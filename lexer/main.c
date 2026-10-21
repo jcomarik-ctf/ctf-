@@ -6,6 +6,9 @@
 #include "token_r.h"
 #include "lexer.h"
 
+#include "../parser/parser.h"
+#include "../parser/hash_t.h"
+
 
 
 int main()
@@ -67,9 +70,9 @@ int main()
     filearr[readb] = '\0';
     length = readb;
 
-   
+    
     Lexer lexeme_array = {0};                           // создаем структуру с данными массива токенов
-    if(lexlz(filearr , length , &lexeme_array) != 0){
+    if(lexlz(filearr , length , &lexeme_array ) != 0){
         printf("Error with output.\n");
         free(filearr);
         fclose(file);
@@ -77,8 +80,13 @@ int main()
         return 1;
     }
 
+    SymbolTable table = create_table(101);
+
+    Parser parser = parse_init(lexeme_array.token_arr , 0 ,lexeme_array.length);
+
+    
     // debug only
-    for(size_t i = 0 ; i < lexeme_array.length ; i++)
+    /*for(size_t i = 0 ; i < lexeme_array.length ; i++)
     {
         printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
              lexeme_array.token_arr[i].value,
@@ -86,11 +94,15 @@ int main()
              lexeme_array.token_arr[i].cpos,
              lexeme_array.token_arr[i].lng);
             
-    }
+    }*/
+
+
 
     printf("%d|%zu", l , length);
 
     fclose(file);
-    free(filearr);   
+    free(filearr);  
+    
+    freeTable(&table);
     return 0;
 }

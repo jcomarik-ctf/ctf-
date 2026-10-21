@@ -23,7 +23,10 @@ typedef enum {
     TOKEN_QUOTE,        // ""
     TOKEN_STRING,       // "string"
     TOKEN_INIT,         // :=
-    TOKEN_SECTION,    // @SECTION@ - any section 
+    TOKEN_SECTION,      // @SECTION@ - any section 
+    TOKEN_INT_KEY,      // int 
+    TOKEN_END_SEC,      // @end@
+
 
 } TOKEN_TYPE;
 

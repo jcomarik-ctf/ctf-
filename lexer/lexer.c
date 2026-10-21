@@ -84,6 +84,18 @@ int lexlz(const char* source , size_t length , Lexer *result)
 
             lexeme[lng] = '\0';
 
+            if(strcmp(lexeme , "int") == 0)
+            {
+                TOKEN t = CreateToken(TOKEN_INT_KEY, spos , lng , lexeme);
+                if(addToken(&lexs , t) != 0)
+                {
+                    printf("error with addToken()\n");
+                    return 1;
+                }
+
+                continue;
+            }
+
             TOKEN t = CreateToken(TOKEN_IDENTIFIER , spos , lng , lexeme);
             if(addToken(&lexs , t) != 0)
             {
@@ -362,10 +374,24 @@ int lexlz(const char* source , size_t length , Lexer *result)
                 memcpy(val , source + start , seclen);
                 val[seclen] = '\0';
 
+                if(strcmp(val , "end") == 0)
+                {
+                    TOKEN t = CreateToken(TOKEN_END_SEC , spos , seclen , val);
+                    if(addToken(&lexs , t) != 0)
+                    {
+                        printf("error with addToken()\n");
+                        free(val);
+                        return 1;
+                    };
+
+                    continue;
+                }
+
                 TOKEN t = CreateToken(TOKEN_SECTION , spos , seclen , val);
                 if(addToken(&lexs , t) != 0)
                 {
                     printf("error with addToken()\n");
+                    free(val);
                     return 1;
                 };
                 
@@ -374,6 +400,7 @@ int lexlz(const char* source , size_t length , Lexer *result)
                 continue;
                 
             }
+
 
             else {
 

@@ -1,6 +1,6 @@
 #pragma once 
 
-#include "Ltoken.h"
+#include "../lexer/Ltoken.h"
 
 typedef struct {
 
