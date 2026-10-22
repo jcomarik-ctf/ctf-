@@ -1,6 +1,6 @@
 # ctf! - Compile That File!
 
-![CTF!](./CTF_LOGO.png)
+![CTF!](./CTF_ICON.png)
 
 An experimental programming language and compiler written in C.
 
