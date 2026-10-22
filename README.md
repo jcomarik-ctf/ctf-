@@ -1,5 +1,7 @@
 # ctf! - Compile That File!
 
+![CTF!](./CTF_LOGO.png)
+
 An experimental programming language and compiler written in C.
 
 The compiler is created specifically for the TJ (Triple J) programming language.
