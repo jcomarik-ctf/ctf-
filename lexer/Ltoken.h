@@ -1,15 +1,19 @@
 #pragma once
 
 typedef enum {
+
+    // arithmetic operators:
+
     TOKEN_PLUS,         // +
     TOKEN_MINUS,        // -
     TOKEN_DIVIDE,       // /
     TOKEN_MULTIPLY,     // *
-    TOKEN_INT_LITERAL,  // 123
+    
+    // punct:
+    
     TOKEN_EQUALS,       // =
     TOKEN_SEMICOLON,    // ;
     TOKEN_COLON,        // :
-    TOKEN_IDENTIFIER,   // any word
     TOKEN_D_EQUALS,     // ==
     TOKEN_T_EQUALS,     // ===
     TOKEN_LPAREN,       // (
@@ -18,15 +22,39 @@ typedef enum {
     TOKEN_RBRACE,       // }
     TOKEN_DOT,          // .
     TOKEN_COMMA,        // ,
-    TOKEN_UNKNOWN,      // UNKNOWN object
     TOKEN_PERCENT,      // %
-    TOKEN_QUOTE,        // ""
-    TOKEN_STRING,       // "string"
     TOKEN_INIT,         // :=
-    TOKEN_SECTION,      // @SECTION@ - any section 
-    TOKEN_INT_KEY,      // int 
+    
+    // base sections:
+    
     TOKEN_END_SEC,      // @end@
+    TOKEN_DATA_SEC,     // @data@
+    TOKEN_FUNC_SEC,     // @func@
+    TOKEN_USE_SEC,      // @use@
+    TOKEN_PROGRAM,     // start point of whole program
 
+    // data types:
+
+    TOKEN_INT_KEY,      // int 
+    TOKEN_DOUBLE_KEY,   // double
+    TOKEN_STR_KEY,      // string
+    TOKEN_REAL,         // real (float)
+    TOKEN_LONG,         // long 
+    TOKEN_CHAR,         // char
+    TOKEN_BYTE,         // byte
+    TOKEN_VOID,         // void
+
+    // "useful" data:
+
+    TOKEN_IDENTIFIER,   // any word
+    TOKEN_SECTION,      // @SECTION@ - any section 
+    TOKEN_INT_LITERAL,  // 123
+
+    // properties:
+
+    TOKEN_CONST,        // const 
+    TOKEN_STATIC,       // static
+    TOKEN_NULL,         // NULL
 
 } TOKEN_TYPE;
 

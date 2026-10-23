@@ -15,7 +15,7 @@ TOKEN CreateToken(TOKEN_TYPE type , size_t current_position , size_t length , co
 
     now_tk.value = malloc((length + 1) * sizeof(char));
 
-    if(now_tk.value)
+    if(now_tk.value) 
     {
         strcpy(now_tk.value , value);
     }

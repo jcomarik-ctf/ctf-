@@ -2,33 +2,33 @@
 
 #include <stdio.h>
 
-int hashFunc(const char* ident);
+int hashFunc(const char* ident);        // from key to hash code
 
-SymbolTable* create_table(int size);
+SymbolTable* create_table(int size);    // init hash table 
 
 
-typedef struct 
+typedef struct              // the struct of one node
 {
-    int value;
-    char* key;
+    int value;              // value (key -> value)
+    char* key;              // key
 
-    HashNode* next;
+    HashNode* next;         // the next node in hash table
 
 
 } HashNode;
 
 
-typedef struct {
+typedef struct {            // the table 
 
-    int size;
-    HashNode** elements;
+    int size;               // count of elements (node)
+    HashNode** elements;    // array of node's arrays 
 
 
 
 } SymbolTable;
 
-int get_var(SymbolTable* env , char* ident);
+int get_var(SymbolTable* env , char* ident);                // get variable in table
 
-int set_var(SymbolTable* env , char* ident , int value);
+int set_var(SymbolTable* env , char* ident , int value);    // set new variable & change value
 
-void freeTable(SymbolTable* env);
+void freeTable(SymbolTable* env);                           // memory free 

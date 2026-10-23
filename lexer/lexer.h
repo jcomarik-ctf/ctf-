@@ -4,6 +4,21 @@
 
 typedef struct {
 
+    const char* operator;
+    TOKEN_TYPE type;
+
+} opToken;
+
+typedef struct {
+
+    const char* keyword;
+    TOKEN_TYPE type;
+    size_t keyLen;
+
+} keyToken;
+
+typedef struct {
+
     size_t capacity;
     size_t length;
 

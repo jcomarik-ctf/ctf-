@@ -8,6 +8,7 @@
 
 #include "../parser/parser.h"
 #include "../parser/hash_t.h"
+#include "../parser/ast.h"
 
 
 
@@ -83,6 +84,8 @@ int main()
     SymbolTable table = create_table(101);
 
     Parser parser = parse_init(lexeme_array.token_arr , 0 ,lexeme_array.length);
+    
+    
 
     
     // debug only

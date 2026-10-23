@@ -4,7 +4,7 @@
 
 #include "hash_t.h"
 
-SymbolTable* create_table(int size)
+SymbolTable* create_table(int size)                 
 {
     SymbolTable* env = malloc(sizeof(SymbolTable));
     env->elements = calloc(size, sizeof(HashNode*));
@@ -14,13 +14,13 @@ SymbolTable* create_table(int size)
     return env;
 }
 
-unsigned int hashFunc(const char* ident){
+unsigned int hashFunc(const char* ident){       // generate unuque hash code based on char* key (ident)
 
-    unsigned int result = 5381;
+    unsigned int result = 5381;                 // start simple int
 
     for(int i = 0 ; ident[i] != '\0' ; ++i)
     {
-        result = (result * 33 + ident[i]);
+        result = (result * 33 + ident[i]);      // djb2 alg
     }
 
     return result;
@@ -29,11 +29,11 @@ unsigned int hashFunc(const char* ident){
 int set_var(SymbolTable* env , char* ident , int value){
 
 
-    unsigned int hcode = hashFunc(ident);
-    int index = hcode % env->size;
+    unsigned int hcode = hashFunc(ident);           // hash code based on identifier
+    int index = hcode % env->size;                  // generate unique table index 
 
     HashNode* current = env->elements[index];
-    while(current != NULL)
+    while(current != NULL)                          // we search exist KEY 
     {
         if(strcmp(current->key , ident) == 0)
         {
@@ -44,15 +44,15 @@ int set_var(SymbolTable* env , char* ident , int value){
 
         current = current->next;
 
-    }
+    }                                               // if KEY not exist , we create them on new node 
 
-    HashNode* new_node = malloc(sizeof(HashNode));
+    HashNode* new_node = malloc(sizeof(HashNode));  // allocate memory to new node
 
     new_node->key = ident;
     new_node->value = value;
 
-    new_node->next = env->elements[index];
-    env->elements[index] = new_node;
+    new_node->next = env->elements[index];          // we pretend be a FIRST element , so save the current first element (next),
+    env->elements[index] = new_node;                // and new_node now is a first element , and next - second
 
     return 0;
     
