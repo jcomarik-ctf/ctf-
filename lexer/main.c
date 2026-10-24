@@ -84,10 +84,7 @@ int main()
     SymbolTable *table = create_table(101);
 
     Parser parser = parse_init(lexeme_array.token_arr , 0 ,lexeme_array.length);
-    
-    
-
-    
+ 
     // debug only
     for(size_t i = 0 ; i < lexeme_array.length ; i++)
     {
@@ -98,8 +95,6 @@ int main()
              lexeme_array.token_arr[i].lng);
             
     }
-
-
 
     printf("%d|%zu", l , length);
 

@@ -45,6 +45,7 @@ typedef enum {
     TOKEN_CHAR,         // char
     TOKEN_BYTE,         // byte
     TOKEN_VOID,         // void
+    TOKEN_BOOL,         // bool 
 
     // "useful" data:
 
@@ -53,12 +54,24 @@ typedef enum {
     TOKEN_INT_LITERAL,  // 123
     TOKEN_VARIABLE,     // $var
     TOKEN_STRING_Q,     // "string"
+    TOKEN_FUNCTION,     // _function
 
     // properties:
 
     TOKEN_CONST,        // const 
     TOKEN_STATIC,       // static
     TOKEN_NULL,         // NULL
+
+    // instructions:
+
+    TOKEN_INZ,          // initialization 
+    TOKEN_MOV,          // rewrite variable
+    TOKEN_ADD,          // add value to varible
+    TOKEN_SBT,          // omagat
+    TOKEN_MLT,          // multiply variable
+    TOKEN_DVD,          // divide variable
+    TOKEN_FNC_DECL,     // fnc: in @func@
+    
 
 } TOKEN_TYPE;
 

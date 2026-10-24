@@ -6,12 +6,14 @@ struct ASTNode;
 
 typedef enum {
 
-    NODE_BIN_OP,        // any binary operation
-    NODE_INT,           // integer    (INT)
-    NODE_IDENT,         // identidier (STR)
-    NODE_ASSIGN,        // x = a + 5
-    NODE_SECTION,       // @data@ -> code
-    NODE_PROGRAM,       // root 
+    NODE_BIN_OP,            // any binary operation
+    NODE_INT,               // integer    (INT)
+    NODE_IDENT,             // identidier (STR)
+    NODE_ASSIGN,            // x = a + 5
+    NODE_SECTION,           // @data@ -> code
+    NODE_PROGRAM,           // root 
+    NODE_INITIALIZATION,    // inz: ...
+
 
 } NODEType;
 

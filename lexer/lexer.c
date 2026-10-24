@@ -9,6 +9,7 @@
 
 #define PUNCT_TABLE_COUNT   (sizeof(PUNCT_RULES) / sizeof(PUNCT_RULES[0]))
 #define KEYWORDS_COUNT      (sizeof(KEYWORDS) / sizeof(KEYWORDS[0]))
+#define INSTRUCTIONS_COUNT  (sizeof(INSTRUCTIONS) / sizeof(INSTRUCTIONS[0]))
 
 static const opToken PUNCT_RULES[] = {
     {"===", TOKEN_T_EQUALS},
@@ -44,6 +45,7 @@ static const keyToken KEYWORDS[] = {
     {"byte" ,   TOKEN_BYTE          , 4},
     {"void" ,   TOKEN_VOID          , 4},
     {"NULL" ,   TOKEN_NULL          , 4},
+    {"bool" ,   TOKEN_BOOL          , 4},
 
     // PROPERTIES:
 
@@ -57,6 +59,18 @@ static const keyToken KEYWORDS[] = {
     {"@end@" ,  TOKEN_END_SEC       , 5},
     {"@func@" , TOKEN_FUNC_SEC      , 6},
     {"@use@" ,  TOKEN_USE_SEC       , 5},
+
+};
+
+static const keyToken INSTRUCTIONS[] = {
+
+    {"inz" ,    TOKEN_INZ           , 3},
+    {"mov" ,    TOKEN_MOV           , 3},
+    {"add" ,    TOKEN_ADD           , 3},
+    {"mlt" ,    TOKEN_MLT           , 3},
+    {"sbt" ,    TOKEN_SBT           , 3},
+    {"dvd" ,    TOKEN_DVD           , 3},
+    {"fnc" ,    TOKEN_FNC_DECL      , 3},
 
 };
 
@@ -179,6 +193,31 @@ int lexlz(const char* source , size_t length , Lexer *result)
                 }
             }
 
+            for(size_t i = 0 ; i < INSTRUCTIONS_COUNT ; i++)
+            {
+                size_t instructionLength = INSTRUCTIONS[i].keyLen;
+
+                if(pos + instructionLength <= length && strncmp(&source[pos] , INSTRUCTIONS[i].keyword , instructionLength) == 0)
+                {
+                    if(pos + instructionLength < length &&(isalnum((unsigned char)source[pos + instructionLength]) || source[pos + instructionLength] == '_'))
+                    {
+                        continue; 
+                    }
+                    
+                    TOKEN t = CreateToken(INSTRUCTIONS[i].type , startPosition , instructionLength , INSTRUCTIONS[i].keyword);
+                    if(addToken(&lexs , t) != 0)
+                    {
+                        printf("error with creating instruction token ../lexer/lexer.c\n");
+                        return 1;
+                    }
+
+                    pos += instructionLength;
+                    match = 1;
+
+                    break;
+                }
+            }
+
             if(match)
             {
                 continue;
@@ -200,6 +239,18 @@ int lexlz(const char* source , size_t length , Lexer *result)
             if(source[startPosition] == '@')
             {
                 TOKEN t = CreateToken(TOKEN_SECTION, startPosition, lng, lexeme);
+                if(addToken(&lexs, t) != 0)
+                {
+                    printf("error with addToken for identifier\n");
+                    return 1;
+                }
+
+                continue;
+            }
+
+            if(source[startPosition] == '_')
+            {
+                TOKEN t = CreateToken(TOKEN_FUNCTION, startPosition, lng, lexeme);
                 if(addToken(&lexs, t) != 0)
                 {
                     printf("error with addToken for identifier\n");
