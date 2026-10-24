@@ -31,7 +31,9 @@ typedef enum {
     TOKEN_DATA_SEC,     // @data@
     TOKEN_FUNC_SEC,     // @func@
     TOKEN_USE_SEC,      // @use@
-    TOKEN_PROGRAM,     // start point of whole program
+    TOKEN_PROGRAM,      // start point of whole program
+
+    TOKEN_RETURN,       // return
 
     // data types:
 
@@ -49,6 +51,8 @@ typedef enum {
     TOKEN_IDENTIFIER,   // any word
     TOKEN_SECTION,      // @SECTION@ - any section 
     TOKEN_INT_LITERAL,  // 123
+    TOKEN_VARIABLE,     // $var
+    TOKEN_STRING_Q,     // "string"
 
     // properties:
 
@@ -61,7 +65,7 @@ typedef enum {
 typedef struct {
 
     TOKEN_TYPE type;    // TYPE OF TOKEN
-    char *value;     // VALUE
+    char *value;        // VALUE
 
     size_t cpos;        // current position (start)
     size_t lng;         //lenght of token

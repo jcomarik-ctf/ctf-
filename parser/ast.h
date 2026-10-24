@@ -1,5 +1,9 @@
 #pragma once
 
+
+struct SymbolTable;
+struct ASTNode;
+
 typedef enum {
 
     NODE_BIN_OP,        // any binary operation
@@ -11,7 +15,7 @@ typedef enum {
 
 } NODEType;
 
-typedef struct {
+typedef struct ASTNode{
 
     NODEType type;      // ast node type
 
@@ -22,8 +26,8 @@ typedef struct {
     
         struct {
 
-            ASTNode* left;
-            ASTNode* right;
+            struct ASTNode* left;
+            struct ASTNode* right;
 
             char operator;
 
@@ -32,7 +36,7 @@ typedef struct {
         struct {
 
             char* variable;
-            ASTNode* expression;
+            struct ASTNode* expression;
 
 
         } ASSIGN;
@@ -41,14 +45,14 @@ typedef struct {
 
             char* section_name;
             int statement_count;
-            ASTNode** statements;
+            struct ASTNode** statements;
 
         } SECTION;   
         
         struct {
 
             int sections_count;
-            ASTNode** sections;
+            struct ASTNode** sections;
 
         } PROGRAM;
     
@@ -58,5 +62,5 @@ typedef struct {
 
 } ASTNode;
 
-int eval(ASTNode* n , SymbolTable *env);
+int eval(ASTNode* n , struct SymbolTable *env);
 

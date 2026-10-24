@@ -1,7 +1,10 @@
 #include <stdio.h>
 
 #include "../lexer/Ltoken.h"
+
 #include "parser.h"
+#include "hash_t.h"
+#include "ast.h"
 
 
 static void error(Parser *p , const char* message)

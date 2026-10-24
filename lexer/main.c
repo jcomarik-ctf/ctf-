@@ -81,7 +81,7 @@ int main()
         return 1;
     }
 
-    SymbolTable table = create_table(101);
+    SymbolTable *table = create_table(101);
 
     Parser parser = parse_init(lexeme_array.token_arr , 0 ,lexeme_array.length);
     
@@ -89,7 +89,7 @@ int main()
 
     
     // debug only
-    /*for(size_t i = 0 ; i < lexeme_array.length ; i++)
+    for(size_t i = 0 ; i < lexeme_array.length ; i++)
     {
         printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
              lexeme_array.token_arr[i].value,
@@ -97,7 +97,7 @@ int main()
              lexeme_array.token_arr[i].cpos,
              lexeme_array.token_arr[i].lng);
             
-    }*/
+    }
 
 
 
@@ -106,6 +106,6 @@ int main()
     fclose(file);
     free(filearr);  
     
-    freeTable(&table);
+    freeTable(table);
     return 0;
 }

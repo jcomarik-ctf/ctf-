@@ -35,26 +35,28 @@ static const keyToken KEYWORDS[] = {
 
     // DATA TYPES:
 
-    {"INT" ,    TOKEN_INT_KEY       , 3},
-    {"DOUBLE" , TOKEN_DOUBLE_KEY    , 6},
-    {"STR" ,    TOKEN_STR_KEY       , 3},
-    {"REAL" ,   TOKEN_REAL          , 4},
-    {"LONG" ,   TOKEN_LONG          , 4},
-    {"CHAR" ,   TOKEN_CHAR          , 4},
-    {"BYTE" ,   TOKEN_BYTE          , 4},
-    {"VOID" ,   TOKEN_VOID          , 4},
+    {"int" ,    TOKEN_INT_KEY       , 3},
+    {"double" , TOKEN_DOUBLE_KEY    , 6},
+    {"str" ,    TOKEN_STR_KEY       , 3},
+    {"real" ,   TOKEN_REAL          , 4},
+    {"long" ,   TOKEN_LONG          , 4},
+    {"char" ,   TOKEN_CHAR          , 4},
+    {"byte" ,   TOKEN_BYTE          , 4},
+    {"void" ,   TOKEN_VOID          , 4},
+    {"NULL" ,   TOKEN_NULL          , 4},
 
     // PROPERTIES:
 
-    {"CONST" ,  TOKEN_CONST         , 5},
-    {"STATIC" , TOKEN_STATIC        , 6},
+    {"const" ,  TOKEN_CONST         , 5},
+    {"static" , TOKEN_STATIC        , 6},
+    {"return" , TOKEN_RETURN        , 6},
 
     // BASE SECTIONS:
 
-    {"@DATA@" , TOKEN_DATA_SEC      , 6},
-    {"@END@" ,  TOKEN_END_SEC       , 5},
-    {"@FUNC@" , TOKEN_FUNC_SEC      , 6},
-    {"@USE@" ,  TOKEN_USE_SEC       , 5},
+    {"@data@" , TOKEN_DATA_SEC      , 6},
+    {"@end@" ,  TOKEN_END_SEC       , 5},
+    {"@func@" , TOKEN_FUNC_SEC      , 6},
+    {"@use@" ,  TOKEN_USE_SEC       , 5},
 
 };
 
@@ -147,7 +149,7 @@ int lexlz(const char* source , size_t length , Lexer *result)
             
         }
 
-        if(isalpha((unsigned char)source[pos]))
+        if(isalpha((unsigned char)source[pos]) || source[pos] == '_' || source[pos] == '@' || source[pos] == '"')
         {
             size_t startPosition = pos;
             int match = 0;
@@ -158,6 +160,11 @@ int lexlz(const char* source , size_t length , Lexer *result)
 
                 if(pos + keywordLength <= length && strncmp(&source[pos] , KEYWORDS[i].keyword , keywordLength) == 0)
                 {
+                    if(pos + keywordLength < length &&(isalnum((unsigned char)source[pos + keywordLength]) || source[pos + keywordLength] == '_'))
+                    {
+                        continue; 
+                    }
+                    
                     TOKEN t = CreateToken(KEYWORDS[i].type , startPosition , keywordLength , KEYWORDS[i].keyword);
                     if(addToken(&lexs , t) != 0)
                     {
@@ -177,7 +184,51 @@ int lexlz(const char* source , size_t length , Lexer *result)
                 continue;
             }
 
-            
+            int lng = 0;
+            char lexeme[128];
+
+            while(pos < length && (isalnum((unsigned char)source[pos]) || source[pos] == '_' || source[pos] == '@' || source[pos] == '"'))
+            {
+                if(lng < 127)
+                {
+                    lexeme[lng++] = source[pos];
+                }
+                pos++;
+            }
+            lexeme[lng] = '\0';
+
+            if(source[startPosition] == '@')
+            {
+                TOKEN t = CreateToken(TOKEN_SECTION, startPosition, lng, lexeme);
+                if(addToken(&lexs, t) != 0)
+                {
+                    printf("error with addToken for identifier\n");
+                    return 1;
+                }
+
+                continue;
+            }
+
+            if(source[startPosition] == '"')
+            {
+                TOKEN t = CreateToken(TOKEN_STRING_Q, startPosition, lng, lexeme);
+                if(addToken(&lexs, t) != 0)
+                {
+                    printf("error with addToken for identifier\n");
+                    return 1;
+                }
+
+                continue;
+            }
+
+            TOKEN t = CreateToken(TOKEN_IDENTIFIER, startPosition, lng, lexeme);
+            if(addToken(&lexs, t) != 0)
+            {
+                printf("error with addToken for identifier\n");
+                return 1;
+            }
+
+            continue;
             
         }
 
@@ -205,7 +256,7 @@ int lexlz(const char* source , size_t length , Lexer *result)
             memcpy(variableName , source + startPosition , variableLen);
             variableName[variableLen] = '\0';
 
-            TOKEN t = CreateToken(TOKEN_IDENTIFIER , startPosition , variableLen, variableName);
+            TOKEN t = CreateToken(TOKEN_VARIABLE , startPosition , variableLen, variableName);
             if(addToken(&lexs , t) != 0)
             {
                 printf("error with create identifier token\n");
@@ -216,6 +267,7 @@ int lexlz(const char* source , size_t length , Lexer *result)
             free(variableName);
             continue;
         }
+
 
         if(ispunct((unsigned char)source[pos]))
         {
