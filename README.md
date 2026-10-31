@@ -15,30 +15,52 @@ The compiler is created specifically for the TJ (Triple J) programming language.
 ## Example TJ syntax: (subject to change)
 
 ```
-use{ioFlakon , strFlakon};
+@use@:
+	...
 
-hide{ioFlakon};
+@func@:
+	fnc: int name():{};
 
-section {data , start , end};
+@data@:
+	inz: int a;
+	inz: real b;
+	inz: str c;
 
-_data:
-	
-	
-	num1: int;
-	num2: int;
-	result: int;
+@main@:
 
+	fwrite("%d\t%e\t%s\t\n" , $a , $b , $c);
 
-_start(sFlag)
+@end@;
 
-	result = recf("%d+%d" , &num1 , &num2);
-
-	
-	print(result , 0);
-
-
-_end(sFlag)
 ```
+
+## One more example:
+
+```
+
+@func@:
+
+    fnc: int _sum(int $a , int $b):{
+        return: ($a + $b);
+    };
+
+@data@:
+
+    inz: int $a := 0;
+    inz: int $b := 0;
+
+@main@:
+
+    _fwrite("%d" , _sum($a , $b));
+
+    
+
+@end@;
+
+
+```
+
+
 ## Compiling : 
 `` ctf -L2 -w .../just_test.tj -o helloworld -r  ``
 
