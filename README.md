@@ -19,7 +19,7 @@ The compiler is created specifically for the TJ (Triple J) programming language.
 	...
 
 @func@:
-	fnc: int name():{};
+	fnc: int _name():{};
 
 @data@:
 	inz: int a;
@@ -28,7 +28,7 @@ The compiler is created specifically for the TJ (Triple J) programming language.
 
 @main@:
 
-	fwrite("%d\t%e\t%s\t\n" , $a , $b , $c);
+	_fwrite("%d\t%e\t%s\t\n" , $a , $b , $c);
 
 @end@;
 
