@@ -2,6 +2,10 @@
 
 typedef enum {
 
+    // EOF
+
+    TOKEN_EOF,
+
     // arithmetic operators:
 
     TOKEN_PLUS,         // +

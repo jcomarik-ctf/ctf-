@@ -75,6 +75,7 @@ static const keyToken INSTRUCTIONS[] = {
 };
 
 
+
 int addToken(Lexer *lex, TOKEN token)
 {
     if(lex->length >= lex->capacity)
@@ -127,6 +128,15 @@ int lexlz(const char* source , size_t length , Lexer *result)
 
     while(pos < length)
     {
+        if(source[pos] == '\0')
+        {
+            TOKEN t = CreateToken(TOKEN_EOF , pos , 0 , NULL);
+            if(addToken(&lexs , t) != 0)
+            {
+                printf("error with addToken()\n");
+                return 1;
+            }
+        }
 
         if (isspace((unsigned char)source[pos]))
         {
@@ -354,6 +364,8 @@ int lexlz(const char* source , size_t length , Lexer *result)
             return 1;
 
         }
+
+        
 
 
         

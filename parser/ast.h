@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../lexer/Ltoken.h"
 
 struct SymbolTable;
 struct ASTNode;
@@ -13,7 +14,11 @@ typedef enum {
     NODE_SECTION,           // @data@ -> code
     NODE_PROGRAM,           // root 
     NODE_INITIALIZATION,    // inz: ...
-
+    NODE_MAINS,             // main section
+    NODE_FUNCS,             // functions section
+    NODE_DATAS,             // data section (variable assigment)
+    NODE_ENDS,              // end of programm
+    NODE_USE,               // use files (aka include)
 
 } NODEType;
 
@@ -26,6 +31,8 @@ typedef struct ASTNode{
         int value;          // node int value
         char* identifier;   // node string for token identifier
     
+        
+
         struct {
 
             struct ASTNode* left;
@@ -42,6 +49,14 @@ typedef struct ASTNode{
 
 
         } ASSIGN;
+
+        struct {
+
+            char* variable;
+            TOKEN_TYPE data_type;
+            struct ASTNode* right;
+
+        } INZ;
 
         struct {
 

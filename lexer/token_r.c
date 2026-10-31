@@ -13,11 +13,17 @@ TOKEN CreateToken(TOKEN_TYPE type , size_t current_position , size_t length , co
     now_tk.cpos = current_position;     // current lexeme pos
     now_tk.lng = length;                // length of lexeme
 
-    now_tk.value = malloc((length + 1) * sizeof(char));
-
-    if(now_tk.value) 
+    if(value == NULL && length == 0)
     {
-        strcpy(now_tk.value , value);
+        now_tk.value = "EOF";
+
+    } else {
+        now_tk.value = malloc((length + 1) * sizeof(char));
+
+        if(now_tk.value) 
+        {
+            strcpy(now_tk.value , value);
+        }
     }
 
     

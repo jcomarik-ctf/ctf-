@@ -14,6 +14,8 @@ typedef struct {
 
 } Parser;
 
+ASTNode* createAST(NODEType type);
+
 static void error(Parser *p , const char* message);
 
 Parser parse_init(TOKEN* token_array , size_t current_pos , size_t count);
