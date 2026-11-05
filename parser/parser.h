@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../lexer/Ltoken.h"
+#include "../parser/ast.h"
 
 
 typedef struct {
@@ -13,6 +14,8 @@ typedef struct {
     
 
 } Parser;
+
+ASTNode* parse_inz(Parser *p);
 
 ASTNode* createAST(NODEType type);
 

@@ -12,13 +12,19 @@
 
 
 
-int main()
+int main(int argc , char** argv)
 {
+    if(argv[1] == NULL)
+    {
+        printf("argument is empty\n");
+        return 1;
+    }
+
     // массив исходного текста 
     char* filearr;
 
     // начало чтения с файла:
-    FILE* file = fopen("test.tj" , "rb");
+    FILE* file = fopen(argv[1] , "rb");
     if(file == NULL)
     {
         printf("Error! File not found.\n");
@@ -86,7 +92,8 @@ int main()
     Parser parser = parse_init(lexeme_array.token_arr , 0 ,lexeme_array.length);
  
     // debug only
-    for(size_t i = 0 ; i < lexeme_array.length ; i++)
+
+    /*for(size_t i = 0 ; i < lexeme_array.length ; i++)
     {
         printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
              lexeme_array.token_arr[i].value,
@@ -94,7 +101,11 @@ int main()
              lexeme_array.token_arr[i].cpos,
              lexeme_array.token_arr[i].lng);
             
-    }
+    }*/
+
+    ASTNode* temp = parse_inz(&parser);
+
+    printf("%s\n", temp->INZ.variable);
 
     printf("%d|%zu", l , length);
 

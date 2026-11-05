@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "../lexer/Ltoken.h"
 
@@ -8,11 +9,20 @@
 #include "hash_t.h"
 #include "ast.h"
 
+#define DEFAULT_SECTIONS_COUNT 8
 
 static void error(Parser *p , const char* message)
 {
-    printf("syntax error : %s" , message);
+    printf("%s" , message);
 }
+
+void createSectionsArray()
+{
+    ASTNode* program_node;
+    program_node->PROGRAM.sections = malloc(sizeof(ASTNode) * DEFAULT_SECTIONS_COUNT);
+    if(!program_node->PROGRAM.sections) exit(1);
+}
+
 
 Parser parse_init(TOKEN* token_array , size_t current_pos , size_t count)
 {
@@ -26,7 +36,7 @@ Parser parse_init(TOKEN* token_array , size_t current_pos , size_t count)
 
 }
 
-int universalType(TOKEN_TYPE type)
+bool universalType(TOKEN_TYPE type)
 {
     return type == TOKEN_INT_KEY ||
         type == TOKEN_DOUBLE_KEY ||
@@ -84,7 +94,6 @@ static int match(Parser *p , TOKEN_TYPE type)
 
 ASTNode* parse_program(Parser *p)
 {
-    ASTNode* program = createAST(NODE_PROGRAM);
 
     while(peek(p)->type != TOKEN_EOF)
     {
@@ -92,7 +101,7 @@ ASTNode* parse_program(Parser *p)
 
         if(t->type == TOKEN_DATA_SEC)
         {
-
+            
         }
         else if (t->type == TOKEN_FUNC_SEC)
         {
@@ -109,6 +118,12 @@ ASTNode* parse_program(Parser *p)
 
         
     }
+
+}
+
+ASTNode* parse_section(Parser *p , TOKEN_TYPE section_type)
+{
+    
 
 }
 
@@ -130,7 +145,8 @@ ASTNode* parse_inz(Parser *p)
     }
 
     TOKEN* current_t = peek(p);
-    if(!universalType(current_t->type))
+
+    if(!(universalType(current_t->type)))
     {
         error(p , "syntax error: expected an type\n");
         free(inz);
@@ -147,6 +163,11 @@ ASTNode* parse_inz(Parser *p)
         return NULL;
     }
     inz->INZ.variable = strdup(var_tok->value);
+
+    if(match(p , TOKEN_SEMICOLON))
+    {
+        return inz;
+    }
 
     if(!match(p , TOKEN_INIT)){
         error(p , "syntax error: expected an \":=\"\n");
@@ -222,34 +243,3 @@ int parse_variable(Parser *p){
 
 }
 
-int section_announcement(Parser *p)
-{
-    if(!match(p , TOKEN_SECTION)) {
-        error(p , "expected an \"@section@\"\n");
-        return 1;
-    } 
-
-    if(!match(p , TOKEN_COLON)) {
-        error(p , "expected an \":\"\n");
-        return 1;
-    }
-
-    while(!check(p , TOKEN_END_SEC))
-    {
-        if(parse_variable(p)) {return 1;}
-    }
-
-
-
-    if(!match(p , TOKEN_END_SEC)) {
-        error(p , "expected an \"@end@\"\n");
-        return 1;
-    }
-
-    if(!match(p , TOKEN_SEMICOLON)) {
-        error(p , "expected an \";\"\n");
-        return 1;
-    }
-
-    return 0;
-}
