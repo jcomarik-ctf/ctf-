@@ -125,19 +125,11 @@ int lexlz(const char* source , size_t length , Lexer *result)
     Lexer lexs = lexer_init(256);
 
     size_t pos = 0;
+    
 
     while(pos < length)
     {
-        if(source[pos] == '\0')
-        {
-            TOKEN t = CreateToken(TOKEN_EOF , pos , 0 , NULL);
-            if(addToken(&lexs , t) != 0)
-            {
-                printf("error with addToken()\n");
-                return 1;
-            }
-        }
-
+        
         if (isspace((unsigned char)source[pos]))
         {
             pos++;
@@ -371,6 +363,12 @@ int lexlz(const char* source , size_t length , Lexer *result)
         
     }
 
+    TOKEN t = CreateToken(TOKEN_EOF , pos , 0 , NULL);
+    if(addToken(&lexs , t) != 0)
+    {
+        printf("error with addToken()\n");
+        return 1;
+    }
     
     *result = lexs;
     return 0;

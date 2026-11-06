@@ -16,11 +16,19 @@ static void error(Parser *p , const char* message)
     printf("%s" , message);
 }
 
-void createSectionsArray()
+void createSectionsArray(ASTNode* program_node)
 {
-    ASTNode* program_node;
-    program_node->PROGRAM.sections = malloc(sizeof(ASTNode) * DEFAULT_SECTIONS_COUNT);
+    if(!program_node) return;
+    program_node->PROGRAM.sections = malloc(sizeof(ASTNode*) * DEFAULT_SECTIONS_COUNT);
+
     if(!program_node->PROGRAM.sections) exit(1);
+}
+
+void createStatementsArray(ASTNode* section_node)
+{
+    if(!section_node) return;
+    
+
 }
 
 
@@ -94,6 +102,10 @@ static int match(Parser *p , TOKEN_TYPE type)
 
 ASTNode* parse_program(Parser *p)
 {
+    //ASTNode* programn = createAST(NODE_PROGRAM);
+    //createSectionsArray(programn);
+
+    //programn->PROGRAM.sections_count = 0;
 
     while(peek(p)->type != TOKEN_EOF)
     {
@@ -101,21 +113,31 @@ ASTNode* parse_program(Parser *p)
 
         if(t->type == TOKEN_DATA_SEC)
         {
-            
+            //ASTNode* sectionn = createAST(NODE_DATAS);
+            printf("DATASEC:\n");
+            advance(p);
+            continue;
         }
         else if (t->type == TOKEN_FUNC_SEC)
         {
-
+            printf("FUNCSEC:\n");
+            advance(p);
+            continue;
         }
         else if (t->type == TOKEN_USE_SEC)
         {
-
+            printf("USESEC:\n");
+            advance(p);
+            continue;
         }
         else if (t->type == TOKEN_SECTION)
         {
-            
+            printf("SEC:\n");
+            advance(p);
+            continue;
         }
 
+        advance(p);
         
     }
 

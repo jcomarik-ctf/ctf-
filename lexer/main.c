@@ -93,8 +93,9 @@ int main(int argc , char** argv)
  
     // debug only
 
-    /*for(size_t i = 0 ; i < lexeme_array.length ; i++)
-    {
+    /*printf("Debug Info:\n");
+    for(size_t i = 0 ; i < lexeme_array.length ; i++)
+    { 
         printf("[\"%s\"] TYPE = %d , start pos = %d , length = %d\n" ,
              lexeme_array.token_arr[i].value,
              lexeme_array.token_arr[i].type ,
@@ -103,11 +104,18 @@ int main(int argc , char** argv)
             
     }*/
 
-    ASTNode* temp = parse_inz(&parser);
+    ASTNode* temp = parse_program(&parser);
+    
 
-    printf("%s\n", temp->INZ.variable);
+    //ASTNode* temp = parse_inz(&parser);
+
+    //printf("%s\n", temp->INZ.variable);
+    //printf("%d\n", (temp->INZ.right->value) + 4);
 
     printf("%d|%zu", l , length);
+
+
+    // free resources 
 
     fclose(file);
     free(filearr);  

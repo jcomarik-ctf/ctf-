@@ -17,6 +17,8 @@ typedef struct {
 
 ASTNode* parse_inz(Parser *p);
 
+ASTNode* parse_program(Parser *p);
+
 ASTNode* createAST(NODEType type);
 
 static void error(Parser *p , const char* message);
